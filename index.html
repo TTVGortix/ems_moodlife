@@ -40,8 +40,8 @@
         }
         .btn-discord:hover { background: #4752C4; transform: scale(1.05); }
 
-        /* Interface Principale (Cachée au début) */
-        #main-ui { display: none; width: 100%; display: flex; }
+        /* Interface Principale (Cachée par défaut) */
+        #main-ui { display: none; width: 100%; height: 100%; display: flex; }
 
         .sidebar {
             width: 260px; background-color: var(--bg-sidebar);
@@ -60,7 +60,7 @@
         .card { background: var(--card-bg); padding: 25px; border-radius: 12px; border-top: 4px solid var(--accent-red); margin-bottom: 20px;}
         
         .user-info { display: flex; align-items: center; gap: 10px; margin-top: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 5px;}
-        .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--accent-red); }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--accent-red); background: #333; }
     </style>
 </head>
 <body>
@@ -75,9 +75,9 @@
         </div>
     </div>
 
-    <div id="main-ui">
+    <div id="main-ui" style="display: none;">
         <div class="sidebar">
-            <h2>EMS SUPPORT</h2>
+            <h2 style="color:var(--accent-red); text-align:center;">EMS SUPPORT</h2>
             <a href="#" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
             <a href="#" class="nav-link"><i class="fas fa-user-injured"></i> Dossiers Patients</a>
             <a href="#" class="nav-link"><i class="fas fa-file-medical"></i> Rapports</a>
@@ -85,8 +85,8 @@
             
             <div id="user-profile" class="user-info">
                 <img id="avatar" class="user-avatar" src="">
-                <span id="username">Chargement...</span>
-                <i class="fas fa-sign-out-alt" onclick="logout()" style="margin-left:auto; cursor:pointer;"></i>
+                <span id="username">Utilisateur</span>
+                <i class="fas fa-sign-out-alt" onclick="logout()" style="margin-left:auto; cursor:pointer;" title="Déconnexion"></i>
             </div>
         </div>
 
@@ -94,14 +94,19 @@
             <h1>Terminal Médical - <span style="color:var(--accent-red)">LSMS</span></h1>
             <div class="card">
                 <h3>Bienvenue dans le MDT</h3>
-                <p>Système de gestion des urgences de Los Santos.</p>
+                <p>Système de gestion des urgences de Los Santos. Connecté en tant que membre du service de santé.</p>
+            </div>
+            <div class="card">
+                <h3>Notes de service</h3>
+                <p>Assurez-vous de bien remplir les rapports d'intervention avant la fin de votre service.</p>
             </div>
         </div>
     </div>
 
     <script>
+        // CONFIGURATION DISCORD
         const CLIENT_ID = '1472988748487590144';
-        const REDIRECT_URI = window.location.href.split('#')[0].split('?')[0]; 
+        const REDIRECT_URI = 'https://ttvgortix.github.io/ems-mdt/'; 
 
         function login() {
             const url = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
@@ -136,7 +141,7 @@
                     if(user.avatar) {
                         document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
                     }
-                    // Nettoyer l'URL
+                    // Nettoyer l'URL sans rafraîchir
                     window.history.replaceState({}, document.title, REDIRECT_URI);
                 })
                 .catch(() => logout());
