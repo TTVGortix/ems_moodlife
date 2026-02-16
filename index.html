@@ -53,12 +53,20 @@
 
         .content { flex: 1; padding: 40px; overflow-y: auto; background: #0a0b10; }
 
+        /* --- STRUCTURE DE L'ANCIEN DASHBOARD --- */
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .search-bar { background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 10px; width: 400px; display: flex; align-items: center; gap: 10px; }
+        .search-bar input { background: none; border: none; color: white; width: 100%; outline: none; }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
         .card { 
             background: var(--card-bg); padding: 25px; border-radius: 15px; 
-            border: 1px solid var(--border-color); border-left: 4px solid var(--accent-red);
+            border: 1px solid var(--border-color); position: relative; overflow: hidden;
             transition: 0.3s;
         }
+        .card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent-red); }
+
+        .status-dot { height: 10px; width: 80px; background: #2ecc71; border-radius: 20px; display: inline-block; margin-right: 10px; }
 
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
@@ -72,8 +80,8 @@
 
     <div id="login-screen">
         <i class="fas fa-heartbeat" style="font-size: 4rem; color: var(--accent-red); margin-bottom: 20px;"></i>
-        <h1>LSMS TERMINAL</h1>
-        <button onclick="login()" style="background:#5865F2; color:white; border:none; padding:15px 30px; border-radius:8px; cursor:pointer; font-weight:bold;">
+        <h1>SAMS MOODLIFE</h1>
+        <button onclick="login()" style="background:#5865F2; color:white; border:none; padding:15px 30px; border-radius:8px; cursor:pointer; font-weight:bold; display: flex; align-items: center; gap: 10px;">
             <i class="fab fa-discord"></i> CONNEXION DISCORD
         </button>
     </div>
@@ -92,7 +100,7 @@
             </nav>
             
             <div class="user-info">
-                <img id="avatar" class="user-avatar" src="">
+                <img id="avatar" class="user-avatar" src="" alt="Avatar">
                 <div>
                     <b id="username">Agent</b><br>
                     <span style="color:#2ecc71; font-size:0.8rem">● En service</span>
@@ -103,14 +111,58 @@
 
         <div class="content">
             <div id="dashboard" class="tab-content active">
-                <h1>Tableau de bord</h1>
+                <div class="header-bar">
+                    <div>
+                        <h1 style="margin:0;">Tableau de bord</h1>
+                        <p style="color: var(--text-dim); margin: 5px 0 0 0;">Bienvenue sur le terminal de régulation SAMS.</p>
+                    </div>
+                    <div class="search-bar">
+                        <i class="fas fa-search" style="color: var(--text-dim);"></i>
+                        <input type="text" placeholder="Rechercher un citoyen...">
+                    </div>
+                </div>
+
                 <div class="grid">
-                    <div class="card"><h3>État du Service</h3><p>🟢 Opérationnel</p></div>
-                    <div class="card"><h3>Unités</h3><p>3 Médecins en ville</p></div>
+                    <div class="card">
+                        <h3 style="margin-top:0;"><i class="fas fa-info-circle" style="color: var(--accent-red);"></i> État du Service</h3>
+                        <p><span class="status-dot"></span> <b>SAMS Opérationnel</b></p>
+                        <p style="color: var(--text-dim); font-size: 0.85rem;">Unités connectées sur le réseau MoodLife.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top:0;"><i class="fas fa-clipboard-list" style="color: var(--accent-blue);"></i> Dernières Interventions</h3>
+                        <ul style="list-style: none; padding:0; font-size: 0.85rem;">
+                            <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">
+                                <b style="color: var(--accent-red);">16:45</b> - AVP Autoroute Est
+                            </li>
+                            <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">
+                                <b style="color: var(--accent-red);">16:20</b> - Chute Square Legion
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="margin-top:0;"><i class="fas fa-user-md" style="color: var(--accent-red);"></i> Médecins Disponibles</h3>
+                        <p>🟢 Dr. Gortix (Chef de service)</p>
+                        <p>🟢 Dr. [Nom du collègue]</p>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px; border-left: 4px solid var(--accent-blue);">
+                    <h3><i class="fas fa-bullhorn" style="color: var(--accent-blue);"></i> Annonces du Haut Commandement</h3>
+                    <p>N'oubliez pas de vérifier vos stocks d'adrénaline et de kits de suture avant chaque prise de service. Les patrouilles en solo sont interdites après 22h.</p>
                 </div>
             </div>
-            <div id="patients" class="tab-content"><h1>Dossiers Patients</h1><div class="card">Recherche en attente...</div></div>
-            <div id="reports" class="tab-content"><h1>Rapports</h1><div class="card">Aucun rapport récent.</div></div>
+
+            <div id="patients" class="tab-content">
+                <h1>Dossiers Patients</h1>
+                <div class="card">Base de données accessible.</div>
+            </div>
+
+            <div id="reports" class="tab-content">
+                <h1>Rapports</h1>
+                <div class="card">Aucun rapport récent.</div>
+            </div>
         </div>
     </div>
 
@@ -146,8 +198,9 @@
                     document.getElementById('login-screen').style.display = 'none';
                     document.getElementById('main-ui').style.display = 'flex';
                     document.getElementById('username').innerText = user.username;
-                    document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-                    // Nettoyage de l'URL pour éviter les boucles
+                    if(user.avatar) {
+                        document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+                    }
                     window.history.replaceState({}, document.title, REDIRECT_URI);
                 }).catch(() => logout());
             }
